@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CG Pulse — UAT Report</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #003B73;
+    --navy-dark: #002B55;
+    --gold: #F5A623;
+    --white: #ffffff;
+    --gray-light: #F7F8FA;
+    --gray-border: #E5E7EB;
+    --text-primary: #1A1A2E;
+    --text-secondary: #6B7280;
+  }
+
+  body {
+    font-family: 'Mulish', sans-serif;
+    background: var(--gray-light);
+    color: var(--text-primary);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  }
+
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-box {
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    color: #fff;
+    border: 1.5px solid rgba(255,255,255,0.2);
+  }
+
+  .logo-text {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+
+  .logo-sep {
+    color: var(--gold);
+    margin: 0 4px;
+  }
+
+  .logo-sub {
+    color: rgba(255,255,255,0.5);
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .header-meta {
+    text-align: right;
+  }
+
+  .header-meta .date {
+    color: rgba(255,255,255,0.5);
+    font-size: 12px;
+  }
+
+  .header-meta .doc-type {
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  /* GOLD ACCENT LINE */
+  .gold-line {
+    height: 3px;
+    background: var(--gold);
+    width: 100%;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-border);
+    padding: 40px 32px;
+    text-align: center;
+  }
+
+  .hero-inner {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .hero h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+
+  .hero p {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  .hero-badges {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .badge-blue { background: #DBEAFE; color: #1E40AF; }
+  .badge-green { background: #D1FAE5; color: #065F46; }
+  .badge-amber { background: #FEF3C7; color: #92400E; }
+
+  /* NAV TABS */
+  .nav-tabs {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-border);
+    position: sticky;
+    top: 71px;
+    z-index: 90;
+  }
+
+  .nav-tabs-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    gap: 0;
+  }
+
+  .nav-tab {
+    padding: 14px 24px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.15s;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .nav-tab:hover { color: var(--navy); }
+
+  .nav-tab.active {
+    color: var(--navy);
+    border-bottom-color: var(--gold);
+  }
+
+  .tab-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .dot-admin { background: #2563EB; }
+  .dot-staff { background: #7C3AED; }
+
+  /* MAIN CONTENT */
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px;
+  }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 48px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .section-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .icon-admin { background: #DBEAFE; }
+  .icon-staff { background: #EDE9FE; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  .section-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  .section-rule {
+    flex: 1;
+    height: 1px;
+    background: var(--gray-border);
+  }
+
+  /* SCRIBE CARD */
+  .scribe-card {
+    background: var(--white);
+    border: 1px solid var(--gray-border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+
+  .scribe-card-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--gray-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--gray-light);
+  }
+
+  .scribe-card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .scribe-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #10B981;
+  }
+
+  .scribe-hint {
+    font-size: 11px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .scribe-embed {
+    display: block;
+    width: 100%;
+    border: 0;
+    min-height: 640px;
+  }
+
+  /* INFO BOX */
+  .info-box {
+    background: #EFF6FF;
+    border: 1px solid #BFDBFE;
+    border-left: 4px solid #2563EB;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: #1E40AF;
+    line-height: 1.5;
+  }
+
+  /* ROLE SUMMARY */
+  .role-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .role-card {
+    background: var(--white);
+    border: 1px solid var(--gray-border);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .role-emoji { font-size: 22px; }
+
+  .role-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .role-access {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--navy-dark);
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 24px 32px;
+    font-size: 12px;
+    margin-top: 48px;
+  }
+
+  footer strong { color: rgba(255,255,255,0.7); }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    .header-inner { padding: 14px 16px; }
+    .logo-sub { display: none; }
+    main { padding: 20px 16px; }
+    .hero { padding: 28px 16px; }
+    .nav-tab { padding: 12px 14px; font-size: 12px; }
+    .scribe-embed { min-height: 500px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-box">CG</div>
+      <div>
+        <div class="logo-text">CG Pulse <span class="logo-sep">·</span> <span class="logo-sub">UAT Report</span></div>
+      </div>
+    </div>
+    <div class="header-meta">
+      <div class="doc-type">User Acceptance Testing</div>
+      <div class="date">Corporate Gurukul · 2026</div>
+    </div>
+  </div>
+  <div class="gold-line"></div>
+</header>
+
+<div class="hero">
+  <div class="hero-inner">
+    <h1>CG Pulse — User Acceptance Testing</h1>
+    <p>This report documents the complete walkthrough of the CG Pulse Student Journey Portal across all user roles. Each section contains an interactive step-by-step guide showing every page, button, and workflow.</p>
+    <div class="hero-badges">
+      <span class="badge badge-blue">📋 Admin Portal</span>
+      <span class="badge badge-green">🎓 Staff Portal</span>
+      <span class="badge badge-amber">⚡ All Workflows Documented</span>
+    </div>
+  </div>
+</div>
+
+<nav class="nav-tabs">
+  <div class="nav-tabs-inner">
+    <a href="#admin" class="nav-tab active">
+      <span class="tab-dot dot-admin"></span>
+      Admin Portal
+    </a>
+    <a href="#staff" class="nav-tab">
+      <span class="tab-dot dot-staff"></span>
+      Staff Portal
+    </a>
+  </div>
+</nav>
+
+<main>
+
+  <div class="role-grid">
+    <div class="role-card">
+      <div class="role-emoji">🛡️</div>
+      <div>
+        <div class="role-name">Admin</div>
+        <div class="role-access">Full system access</div>
+      </div>
+    </div>
+    <div class="role-card">
+      <div class="role-emoji">👨‍🏫</div>
+      <div>
+        <div class="role-name">Faculty</div>
+        <div class="role-access">Schedule, attendance, grades</div>
+      </div>
+    </div>
+    <div class="role-card">
+      <div class="role-emoji">🎓</div>
+      <div>
+        <div class="role-name">Student</div>
+        <div class="role-access">Journey, checklist, services</div>
+      </div>
+    </div>
+    <div class="role-card">
+      <div class="role-emoji">🏪</div>
+      <div>
+        <div class="role-name">Vendor</div>
+        <div class="role-access">Manifests, invoices</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN SECTION -->
+  <div class="section" id="admin">
+    <div class="section-header">
+      <div class="section-icon icon-admin">🛡️</div>
+      <div>
+        <div class="section-title">Admin Portal</div>
+        <div class="section-desc">Complete walkthrough of all admin pages, settings, and workflows</div>
+      </div>
+      <div class="section-rule"></div>
+    </div>
+
+    <div class="info-box">
+      This guide covers the Admin portal including the Cohort Hub, Student Management, Document Directory, Report Builder, Service Catalog, Finance, Vendor Management, and all system administration pages.
+    </div>
+
+    <div class="scribe-card">
+      <div class="scribe-card-header">
+        <div class="scribe-card-title">
+          <div class="scribe-dot"></div>
+          CG Pulse — Admin Portal Walkthrough
+        </div>
+        <div class="scribe-hint">📖 Scroll through all steps below</div>
+      </div>
+      <iframe
+        class="scribe-embed"
+        src="https://scribehow.com/embed/CG__Admin_Portal__WaFwWt4CSgCdybq3_FiHvQ?as=scrollable"
+        allow="fullscreen"
+        title="CG Pulse Admin Portal UAT Walkthrough"
+      ></iframe>
+    </div>
+  </div>
+
+  <!-- STAFF SECTION -->
+  <div class="section" id="staff">
+    <div class="section-header">
+      <div class="section-icon icon-staff">👨‍🏫</div>
+      <div>
+        <div class="section-title">Staff Portal</div>
+        <div class="section-desc">Walkthrough of administrative and student academic task management</div>
+      </div>
+      <div class="section-rule"></div>
+    </div>
+
+    <div class="info-box">
+      This guide covers the Staff portal including schedule management, attendance marking, assignment grading, student academic tracking, and communication workflows.
+    </div>
+
+    <div class="scribe-card">
+      <div class="scribe-card-header">
+        <div class="scribe-card-title">
+          <div class="scribe-dot"></div>
+          CG Pulse — Staff Portal Walkthrough
+        </div>
+        <div class="scribe-hint">📖 Scroll through all steps below</div>
+      </div>
+      <iframe
+        class="scribe-embed"
+        src="https://scribehow.com/embed/Managing_Staff_Portal_Administrative_and_Student_Academic_Tasks__2lDMXyeUTp202Kar_7cGgw?as=scrollable"
+        allow="fullscreen"
+        title="CG Pulse Staff Portal UAT Walkthrough"
+      ></iframe>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <strong>CG Pulse</strong> — Student Journey Portal · Corporate Gurukul · UAT Report · Confidential
+</footer>
+
+<script>
+  // Smooth scroll + active tab highlighting
+  const tabs = document.querySelectorAll('.nav-tab');
+  const sections = document.querySelectorAll('.section');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', e => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      if (window.scrollY >= section.offsetTop - 160) {
+        current = section.getAttribute('id');
+      }
+    });
+    tabs.forEach(tab => {
+      tab.classList.remove('active');
+      if (tab.getAttribute('href') === '#' + current) {
+        tab.classList.add('active');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
